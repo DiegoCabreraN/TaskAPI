@@ -1,5 +1,5 @@
-from app import db
-from app.auth.models import User
+from app.main import db
+from auth.models import User
 
 def createUser(username, email, password):
   try:

@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 
 print('LISTENING ON PORT 8000')
 
-from app.auth import createUser, searchUser
+from auth import createUser, searchUser
 
 @app.route('/signup', methods=['POST'])
 def signUp():
@@ -28,7 +28,7 @@ def login():
     request.args['password']
   )
 
-from app.products import getProducts, createProduct, getProduct, deleteProduct
+from products import getProducts, createProduct, getProduct, deleteProduct
 
 @app.route('/products', methods=['GET', 'POST'])
 def products():

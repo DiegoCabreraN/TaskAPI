@@ -1,6 +1,6 @@
 from flask import jsonify
-from app import db
-from app.products.models import Product
+from app.main import db
+from products.models import Product
 
 def getProduct(id):
   query = db.session.query(Product)
