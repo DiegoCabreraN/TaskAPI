@@ -9,6 +9,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sunshop.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+print('LISTENING ON PORT 8000')
+
 from app.auth import createUser, searchUser
 
 @app.route('/signup', methods=['POST'])
