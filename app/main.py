@@ -3,13 +3,13 @@ from flask import Flask, request, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
-app.config['SERVER_NAME'] = "localhost:8000"
+# app.config['DEBUG'] = True
+# app.config['SERVER_NAME'] = "localhost:8000"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sunshop.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-print('LISTENING ON PORT 8000')
+# print('LISTENING ON PORT 8000')
 
 from auth import createUser, searchUser
 
