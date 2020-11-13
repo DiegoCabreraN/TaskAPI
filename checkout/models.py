@@ -3,7 +3,7 @@ from app import db
 
 class Checkout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=False, nullable=False)
     address = db.Column(db.String(200), unique=False, nullable=False)
     country = db.Column(db.String(128), unique=False, nullable=False)
     lastNums = db.Column(db.Integer, nullable=False)

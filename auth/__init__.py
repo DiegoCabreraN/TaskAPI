@@ -33,7 +33,8 @@ def searchUser(username, password):
 
 
 def userExists(username):
-    user = User.query.filter_by(username=username).first()
-    if user:
-        return True
+    if username:
+        user = User.query.filter_by(username=username).first()
+        if user:
+            return True
     return False
