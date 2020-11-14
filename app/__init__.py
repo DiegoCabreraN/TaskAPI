@@ -47,7 +47,7 @@ def products():
             'gender': request.args['gender'],
             'price': request.args['price'],
             'description': request.args['description'],
-            'image_url': request.args['image_url']
+            'image': request.args['image']
         }
         return createProduct(productData)
 
