@@ -9,6 +9,7 @@ class Product(db.Model):
     gender = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(250), nullable=False)
+    image_url = db.Column(db.String(250), nullable=False)
 
     def __repr__(self):
         return '<Product {}>'.format(self.name)
@@ -21,5 +22,6 @@ class Product(db.Model):
             'color': self.color,
             'gender': self.gender,
             'price': self.price,
-            'description': self.description
+            'description': self.description,
+            'image_url': self.image_url
         }

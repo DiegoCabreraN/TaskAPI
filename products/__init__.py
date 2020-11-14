@@ -42,6 +42,7 @@ def createProduct(productData):
             gender=productData['gender'],
             price=productData['price'],
             description=productData['description'],
+            image_url=productData['image_url'],
         )
         db.session.add(product)
         db.session.commit()
