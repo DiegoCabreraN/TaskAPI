@@ -1,9 +1,22 @@
 import json
 from flask import request, jsonify, Response
 from app.config import app, db
-from auth import createUser, searchUser, userExists
-from products import getProducts, createProduct, getProduct, deleteProduct
 from checkout import getOrders, createOrder
+from auth import (
+    createUser,
+    searchUser,
+    userExists,
+    createSuperUser,
+    userIsSuperUser
+)
+from products import (
+    getProducts,
+    createProduct,
+    getProduct,
+    deleteProduct,
+    updateProduct,
+    setScore
+)
 
 
 @app.route('/signup', methods=['POST'])
@@ -23,10 +36,27 @@ def login():
     )
 
 
+@app.route('/supersignup', methods=['POST'])
+def supersignup():
+    return createSuperUser(
+        request.args['username'],
+        request.args['email'],
+        request.args['password']
+    )
+
+
+@app.route('/superlogin', methods=['POST'])
+def superlogin():
+    return userIsSuperUser(
+        request.args['username']
+    )
+
+
 @app.route('/products', methods=['GET', 'POST'])
 def products():
     if request.method == 'GET':
         params = {
+            'name': request.args.get('name', None),
             'gender': request.args.get('gender', 0),
             'color': request.args.get('color', None),
             'style': request.args.get('style', None),
@@ -52,14 +82,35 @@ def products():
         return createProduct(productData)
 
 
-@app.route('/products/<int:id>', methods=['GET', 'DELETE'])
+@app.route('/products/<int:id>', methods=['GET', 'DELETE', 'PUT'])
 def product(id):
     if request.method == 'GET':
         product = getProduct(id)
         return Response(json.dumps(product), mimetype='application/json'), 200
+    elif request.method == 'PUT':
+        oldProduct = getProduct(id)
+        productDictionary = {
+            'name': request.args.get('name', oldProduct['name']),
+            'style': request.args.get('style', oldProduct['style']),
+            'color': request.args.get('color', oldProduct['color']),
+            'gender': request.args.get('gender', oldProduct['gender']),
+            'price': request.args.get('price', oldProduct['price']),
+            'description': request.args.get('description',
+                                            oldProduct['description']),
+            'image': request.args.get('image', oldProduct['image'])
+        }
+
+        product = updateProduct(id, productDictionary)
+        return Response(json.dumps(product), mimetype='application/json'), 200
     else:
         product = deleteProduct(id)
         return Response(json.dumps(product), mimetype='application/json'), 200
+
+
+@app.route('/score/<int:id>', methods=['POST'])
+def score(id):
+    productScore = setScore(id, request.args['score'])
+    return Response(json.dumps(productScore), mimetype='application/json'), 200
 
 
 @app.route('/checkouts', methods=['GET', 'POST'])
@@ -87,7 +138,7 @@ def checkouts():
             'total': request.args['total'],
             'itemList': request.data,
         }
-        
+
         return createOrder(orderData)
 
 

@@ -43,9 +43,50 @@ def createProduct(productData):
             price=productData['price'],
             description=productData['description'],
             image=productData['image'],
+            score=0,
+            reviews=0
         )
         db.session.add(product)
         db.session.commit()
         return 'Product Created Successfuly', 200
     except Exception:
         return 'Error while creating the product', 500
+
+
+def updateProduct(id, productDictionary):
+    try:
+        product = Product.query.filter_by(id=id)
+        product.update(dict(
+            name=productDictionary['name'],
+            style=productDictionary['style'],
+            color=productDictionary['color'],
+            gender=productDictionary['gender'],
+            price=productDictionary['price'],
+            description=productDictionary['description'],
+            image=productDictionary['image'],
+        ))
+        db.session.commit()
+        return 'Product Updated Successfuly', 200
+    except Exception:
+        return 'Error while updating the product', 500
+
+
+def setScore(id, scoreToAdd):
+    # try:
+    product = Product.query.filter_by(id=id)
+    productDictionary = product.first().as_dict()
+    totalScore = productDictionary['reviews'] * productDictionary['score']
+    productDictionary['reviews'] += 1
+
+    newScore = totalScore + int(scoreToAdd)
+    productDictionary['score'] = newScore/productDictionary['reviews']
+    
+    product.update(dict(
+            score=productDictionary['score'],
+            reviews=productDictionary['reviews'],
+        ))
+
+    db.session.commit()
+    return 'Score Updated Successfuly', 200
+    # except Exception:
+    #     return 'Error while updating the score', 500
