@@ -15,6 +15,7 @@ def deleteProduct(id):
     query = query.filter(Product.id == id)
     retrievedProduct = query.first()
     db.session.delete(retrievedProduct)
+    db.session.commit()
     return {'Deleted Object': retrievedProduct.as_dict()}
 
 
