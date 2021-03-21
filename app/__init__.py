@@ -55,9 +55,9 @@ def task(id):
                 return Response(json.dumps(actualTask), mimetype='application/json'), 200
             else:
                 return "Oops!, something went wrong", 404
-                
+
     elif actualTask['owner'] == request.json['user_id']:
-        elif request.method == 'PUT':
+        if request.method == 'PUT':
             taskDictionary = {
                 'id': request.json.get('id', actualTask['id']),
                 'title': request.json.get('title', actualTask['title']),
