@@ -36,11 +36,8 @@ def login():
 @app.route('/tasks', methods=['GET', 'POST'])
 def tasks():
     if request.method == 'GET':
-        if request.json['user_id']:
-            tasks = getTasks(request.json['user_id'])
-            return Response(json.dumps(tasks), mimetype='application/json')
-        else:
-            return Response('Incorrect Petition')
+        tasks = getTasks(request.json['user_id'])
+        return Response(json.dumps(tasks), mimetype='application/json')
     else:
         response = createTask(request.json)
         return response
