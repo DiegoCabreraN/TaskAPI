@@ -1,5 +1,6 @@
 import json
 from flask import request, jsonify, Response
+from flask_cors import cross_origin
 from app.config import app, db
 
 from auth import (
@@ -34,6 +35,7 @@ def login():
     return response
 
 @app.route('/tasks', methods=['GET', 'POST'])
+@cross_origin()
 def tasks():
     if request.method == 'GET':
         tasks = getTasks(request.json['user_id'])
