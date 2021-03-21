@@ -38,7 +38,8 @@ def login():
 @cross_origin()
 def tasks():
     if request.method == 'GET':
-        tasks = getTasks(request.json['user_id'])
+        user_id = request.args.get('user_id', type=int)
+        tasks = getTasks(user_id)
         return Response(json.dumps(tasks), mimetype='application/json')
     else:
         response = createTask(request.json)
@@ -48,9 +49,14 @@ def tasks():
 @app.route('/tasks/<int:id>', methods=['GET', 'DELETE', 'PUT'])
 def task(id):
     actualTask = getTask(id)
-    if actualTask['owner'] == request.json['user_id']:
-        if request.method == 'GET':
-            return Response(json.dumps(actualTask), mimetype='application/json'), 200
+    if request.method == 'GET':
+            user_id = request.args.get('user_id', type=int)
+            if actualTask['owner'] == user_id:
+                return Response(json.dumps(actualTask), mimetype='application/json'), 200
+            else:
+                return "Oops!, something went wrong", 404
+                
+    elif actualTask['owner'] == request.json['user_id']:
         elif request.method == 'PUT':
             taskDictionary = {
                 'id': request.json.get('id', actualTask['id']),
